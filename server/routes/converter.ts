@@ -7,7 +7,7 @@ import {
 } from 'change-case';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import JSON5 from 'json5';
-import { parse as parseToml, stringify as stringifyToml } from 'iarna-toml-esm';
+import { parse as parseToml, stringify as stringifyToml } from 'smol-toml';
 import convert from 'xml-js';
 import markdownit from 'markdown-it';
 import { colord } from 'colord';
@@ -222,9 +222,6 @@ router.post('/color', async (c) => {
         rgb: parsed.toRgb(),
         hsl: parsed.toHsl(),
         hsv: parsed.toHsv(),
-        hwb: parsed.toHwb(),
-        lch: parsed.toLch(),
-        lab: parsed.toLab(),
       },
     });
   } catch (e: any) {
