@@ -231,12 +231,21 @@ router.post('/rsa/generate', async (c) => {
 });
 
 // BIP39 — generate mnemonic
+// entropyBits must be one of: 128, 160, 192, 224, 256 (maps to 16/20/24/28/32 bytes)
 router.post('/bip39/generate', async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { entropyBits = 128 } = body;
-  const entropy = generateEntropy({ entropyBits });
-  const mnemonic = entropyToMnemonic(entropy, englishWordList);
-  return c.json({ result: mnemonic });
+  const validBits = [128, 160, 192, 224, 256];
+  if (!validBits.includes(entropyBits)) {
+    return c.json({ error: `entropyBits must be one of: ${validBits.join(', ')}` }, 400);
+  }
+  try {
+    const entropy = generateEntropy(entropyBits / 8);
+    const mnemonic = entropyToMnemonic(entropy, englishWordList);
+    return c.json({ result: mnemonic });
+  } catch (e: any) {
+    return c.json({ error: e.message }, 500);
+  }
 });
 
 // BIP39 — mnemonic to entropy
@@ -299,9 +308,8 @@ router.post('/otp/key-uri', async (c) => {
 router.post('/password-strength', async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { password = '' } = body;
-  const charsetLength = getCharsetLength(password);
   const result = getPasswordCrackTimeEstimation({ password });
-  return c.json({ result: { ...result, charsetLength } });
+  return c.json({ result });
 });
 
 export default router;

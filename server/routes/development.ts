@@ -81,9 +81,11 @@ router.post('/chmod/calculate', async (c) => {
   const {
     owner = { read: false, write: false, execute: false },
     group = { read: false, write: false, execute: false },
-    public: pub = { read: false, write: false, execute: false },
+    public: pub,
+    others,
   } = body;
-  const permissions = { owner, group, public: pub };
+  const pubPerms = pub ?? others ?? { read: false, write: false, execute: false };
+  const permissions = { owner, group, public: pubPerms };
   const octal = computeChmodOctalRepresentation({ permissions });
   const symbolic = computeChmodSymbolicRepresentation({ permissions });
   return c.json({ result: { octal, symbolic, command: `chmod ${octal}` } });
@@ -92,9 +94,10 @@ router.post('/chmod/calculate', async (c) => {
 // Docker run → Docker Compose
 router.post('/docker/to-compose', async (c) => {
   const body = await c.req.json().catch(() => ({}));
-  const { dockerRun = '' } = body;
+  const { dockerRun, command } = body;
+  const cmd = (dockerRun ?? command ?? '').trim();
   try {
-    const { yaml, messages } = composerize(dockerRun.trim());
+    const { yaml, messages } = composerize(cmd);
     return c.json({ result: { yaml, messages } });
   } catch (e: any) {
     return c.json({ error: e.message }, 400);

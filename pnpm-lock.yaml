@@ -170,6 +170,9 @@ importers:
       randexp:
         specifier: ^0.5.3
         version: 0.5.3
+      smol-toml:
+        specifier: ^1.6.1
+        version: 1.6.1
       sql-formatter:
         specifier: ^13.0.0
         version: 13.0.0
@@ -5183,6 +5186,10 @@ packages:
 
   smob@1.5.0:
     resolution: {integrity: sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==}
+
+  smol-toml@1.6.1:
+    resolution: {integrity: sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==}
+    engines: {node: '>= 18'}
 
   snake-case@2.1.0:
     resolution: {integrity: sha512-FMR5YoPFwOLuh4rRz92dywJjyKYZNLpMn1R5ujVpIYkbA9p01fq8RMg0FkO4M+Yobt4MjHeLTJVm5xFFBHSV2Q==}
@@ -11622,6 +11629,8 @@ snapshots:
   slash@4.0.0: {}
 
   smob@1.5.0: {}
+
+  smol-toml@1.6.1: {}
 
   snake-case@2.1.0:
     dependencies:
