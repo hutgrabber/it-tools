@@ -1,4 +1,5 @@
 import { serve } from '@hono/node-server';
+import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
@@ -134,6 +135,12 @@ app.get('/api', (c) => {
     },
   });
 });
+
+// Serve built Vue frontend static files (when SERVE_STATIC=true)
+if (process.env.SERVE_STATIC === 'true') {
+  app.use('/*', serveStatic({ root: './dist' }));
+  app.get('/*', serveStatic({ path: './dist/index.html' }));
+}
 
 const port = Number(process.env.API_PORT ?? 3000);
 
